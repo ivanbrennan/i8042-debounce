@@ -49,7 +49,9 @@ static bool i8042_debounce_filter(
 	if (data & 0x80) {
 		// This is a keyup event
 		key->is_down = false;
-		keys_currently_down--;
+		if (likely(keys_currently_down)) {
+			keys_currently_down--;
+		}
 
 		key->jiffies_last_keyup = jiffies;
 		if (key->block_next_keyup) {
